@@ -1,0 +1,66 @@
+---
+title: "Janitor Package"
+subtitle: "Cleaning dirty data using the janitor package - by Eduardo Campbell and Claudia Zwar"
+output: 
+  html_document:
+    toc: TRUE
+    df_print: paged
+    number_sections: FALSE
+    highlight: tango
+    theme: lumen
+    toc_depth: 3
+    toc_float: true
+    css: custom.css 
+    self_contained: false
+    includes:
+      after_body: footer.html
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+```
+***
+
+As a budding data scientist, do you feel like you spend a lot of time **tidying** data? Renaming columns, deleting unnecessary information, wrangling data into `tidy data` format? If your answer to this question is yes, this session is for you.
+
+Today we will introduce you to the janitor package, which is part of the tidyverse. The janitor package was designed to help with some of the repetitive tasks involved in preparing data for analysis, and quickly looking at aspects of data (e.g. with tables).
+
+What we will cover in this session:
+
+* Cleaning a dirty dataset using janitor
+* Creating tables
+* Editing tables and data frames using janitor functions 
+
+# Cleaning a dirty data set using janitor
+
+xx
+
+```{r, message=F}
+
+
+```
+
+# Heading 2 
+
+xx
+
+**Step 1.**
+
+```{r, message=F}
+
+```
+
+**Step 2.** 
+
+```{r}
+
+```
+
+**Step 3.** 
+
+```{r}
+
+
+```
+

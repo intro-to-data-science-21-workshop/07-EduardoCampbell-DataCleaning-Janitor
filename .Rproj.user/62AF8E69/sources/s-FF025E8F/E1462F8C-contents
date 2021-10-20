@@ -1,0 +1,24 @@
+---
+  title: "Web Scraping"
+subtitle: "Collecting Data from the Web using R"
+output: 
+  html_document:
+  toc: TRUE
+df_print: paged
+number_sections: FALSE
+highlight: tango
+theme: lumen
+toc_depth: 3
+toc_float: true
+css: custom.css 
+self_contained: false
+includes:
+  after_body: footer.html
+---
+  
+  ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+***
+  
+  After talking quite a bit about data formats and data processing in the past weeks, today's session is dedicated to data collection - from the web!

@@ -1,0 +1,26 @@
+{
+    "id": "33B2B994",
+    "path": "~/GitHub/labs/session-3-tidyverse/3-tidyverse.Rmd",
+    "project_path": null,
+    "type": "r_markdown",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1634720832341.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "48,31",
+        "scrollLine": "32"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1633516887,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1633516887,
+    "read_only": false,
+    "read_only_alternatives": []
+}
