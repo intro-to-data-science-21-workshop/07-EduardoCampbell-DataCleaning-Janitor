@@ -31,5 +31,9 @@ This short student-run workshop is part of the course I2DS Tools for Data Scienc
 
 ## License
 
+The material in this repository is made available under the MIT license.
 
 ## Statement of Contributions 
+
+**Claudia Zwar*
+**Eduardo Campbell**
