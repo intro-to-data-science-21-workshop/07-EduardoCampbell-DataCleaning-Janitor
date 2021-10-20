@@ -35,5 +35,6 @@ The material in this repository is made available under the MIT license.
 
 ## Statement of Contributions 
 
-**Claudia Zwar*
+**Claudia Zwar**
+
 **Eduardo Campbell**
