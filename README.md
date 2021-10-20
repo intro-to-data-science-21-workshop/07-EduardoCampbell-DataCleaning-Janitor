@@ -7,12 +7,12 @@ This short student-run workshop is part of the course I2DS Tools for Data Scienc
 
 ## Session Content 
 
--clean_names()
--tabyl()
--remove_empty()
--crosstabulation: adorn_totals(), adorn_percentages(), adorn_pct_formatting ()
--get_dupes()
--excel_numeric_to_date()
+- clean_names()
+- tabyl()
+- remove_empty()
+- crosstabulation: adorn_totals(), adorn_percentages(), adorn_pct_formatting ()
+- get_dupes()
+- excel_numeric_to_date()
 
 ## Main learning objectives
 
