@@ -19,8 +19,14 @@ This short student-run workshop is part of the course I2DS Tools for Data Scienc
 
 ## Instructors
 
+- Claudia Zwar
+- Eduardo Campbell
+
 
 ## Further resources
+
+- https://github.com/sfirke/janitor
+- https://garthtarr.github.io/meatR/janitor.html#crosstabulation
 
 
 ## License
