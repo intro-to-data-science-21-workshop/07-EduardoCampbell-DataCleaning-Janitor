@@ -19,7 +19,7 @@ This short student-run workshop is part of the course I2DS Tools for Data Scienc
 
 ## Instructors
 
-- Claudia Zwar     ([website] (https://github.com/claudiazwar))
+- Claudia Zwar     ([website](https://github.com/claudiazwar))
 - Eduardo Campbell ([website](https://github.com/ecampbell10), [twitter](https://twitter.com/ecampbell1096))
 
 
