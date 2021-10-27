@@ -1,0 +1,108 @@
+---
+title: "Cleaning dirty data with janitor"
+subtitle: "Workshop exercises"
+output: 
+  html_document:
+    toc: TRUE
+    df_print: paged
+    number_sections: FALSE
+    highlight: tango
+    theme: lumen
+    toc_depth: 3
+    toc_float: true
+    css: custom.css 
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+Hopefully by now you have watched our presentation on the janitor package, which gave you an overview of why the package is an invaluable tool for budding data scientists. In this hands-on workshop, we are going to showcase some of the janitor packages' useful functions and walk-through some practice exercises to get you familiar with using it. 
+
+There are three elements to this session:
+
+* Cleaning a dirty dataset using janitor
+* Creating tables
+* Editing tables and data frames using janitor functions
+
+Before we get started, let's load the packages we'll need for these exercises.
+
+```{r}
+library(tidyverse) # So we have all the other useful tidyverse functions
+library(janitor) # the package of the moment
+library(readxl) # to load excel
+library(lubridate) # for better presentation of dates
+```
+
+## Cleaning a dirty dataset using janitor
+
+One of the best features of the janitor package is how it can help you to clean messy data tables, which you receive in excel format or download from the web. Our excel spreadsheet contains fake data about attendees at the 'Hertie end of year party'. It looks like this:
+
+
+```{r, fig.align='center', echo=F, out.width = "100%"}
+knitr::include_graphics("Excel_image.png")
+```
+
+
+Let's load the excel file and check how it loads in R.
+
+```{r}
+party_raw <- read_excel("party.xlsx")
+slice(party_raw)
+```
+We can see there are several problems with this data:
+
+* The column names are in the third row 
+* There are columns which don't have any data in them
+* The 'date RSVP' column has a mixed format
+* The 'paid for ticket' and 'RSVP' columns are duplicated - suggesting that when someone RSVPs, they have to pay for their ticket anyway.
+* And more...
+
+Let's use the **janitor** package to clean the data.
+
+```{r}
+party <- party_raw %>% 
+  row_to_names(row_number = 2) %>%
+  clean_names()
+```
+
+Now we have removed the useless first row and made the column names clearer using `clean_names`.
+
+**Exercise**
+Using janitor functions you learned in the pre-recorded session, can you
+
+* Delete empty columns
+* Delete empty rows
+* Remove columns that have a constant value
+* Update the date format so that the dates are consistent? (Hint: use the lubridate package)
+
+Solution
+```{r}
+party <- party %>%
+  remove_empty(c("rows", "cols")) %>%
+  remove_constant(na.rm = TRUE, quiet = FALSE) %>%
+  mutate(date_rsvp_updated = convert_to_date(date_rsvp,
+                                             character_fun = lubridate::mdy))
+
+```
+
+## Creating tables
+
+Janitor also offers a version of the table() function from base R, but in a much more powerful form. To demonstrate this, we're going to use a dataset on athletes who won medals at the recent Tokyo 2021 Olympics. This data was downloaded from [Kaggle, here](https://www.kaggle.com/arjunprasadsarkhel/2021-olympics-in-tokyo/version/7)
+
+First we will load the data
+
+```{r}
+athletes <- read_excel("athletes.xlsx")
+head(athletes)
+```
+
+What if we want to know the medal breakdown by country? Janitor uses tidyverse syntax, so we can sort the number of medals in descending order and only view the top 10 countries
+```{r}
+athletes %>% 
+  tabyl(NOC)
+  
+```
