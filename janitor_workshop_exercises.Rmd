@@ -15,7 +15,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE) 
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE) 
 ```
 
 ## Why Janitor? `r emo::ji("computer")`
@@ -27,19 +27,27 @@ As a budding data scientist, do you feel like you spend a lot of time **tidying*
 The janitor package is a great tool and simple to use for cleaning and examining data. Janitor is very user friendly as it was built with beginning and intermediate R users in mind. Advanced R users can already do almost everything that this package does, however with janitor they will save time. 
 
 ## Janitor
-EDIT THIS PART SO IT DOES NOT LOOK PLAGERIZED 
 
 The janitor package is a R package that has simple functions for examining and cleaning dirty data. While cleaning and exploring data are some of its key functions, janitor also offers some functions to create and format frequency tables. 
 
 The main janitor functions:
 
 * perfectly format data.frame column names
-* create and format frequency tables of one, two, or three variables (an improved table() fucntion)
+* create and format frequency tables of one, two, or three variables (an improved table() function)
 * provide other tools for cleaning and examining data.frames
 
-It is important to notice that janitor is a #tidyverse-oriented package. In other words, it plays nicely with the %>% pipe and is optimized for cleaning data brought in with the readr and readxl packages.
+It is important to notice that janitor is a **tidyverse-oriented package**. In other words, it plays nicely with the %>% pipe and is optimized for cleaning data brought in with the readr and readxl packages.
 
+In this presentation you will learn:
 
+* what we mean by dirty data
+* how to save time cleaning data 
+* key functions of the janitor package
+
+The presentation will be divided into two parts:
+
+1. Cleaning a dirty dataset
+2. Creating and editing table
 ```{r}
 library(tidyverse) # So we have all the other useful tidyverse functions
 library(janitor) # the package of the moment
@@ -49,7 +57,7 @@ library(devtools) #to make the RMD look great
 library(usethis)
 ```
 
-## Cleaning a dirty dataset using janitor
+## Section 1: Cleaning a dirty dataset
 
 One of the best features of the janitor package is how it can help you to clean messy data tables, which you receive in excel format or download from the web. Our excel spreadsheet contains fake data about attendees at the 'Hertie end of year party'. It looks like this:
 
