@@ -2,27 +2,13 @@
 
 ## Summary 
 
-This short student-run workshop is part of the course [I2DS Tools for Data Science workshop](https://github.com/intro-to-data-science-21-workshop) at the [Hertie School, Berlin](https://www.hertie-school.org/en/). The student-run workshop is part of the course [Introduction to Data Science](https://github.com/intro-to-data-science-21) taught by Simon Munzert at the Hertie School, Berlin, in Fall 2021. 
-
-The purpose of this workshop is to introduce students to the Janitor Package as an additional tool in their data science toolbox. 
+This short student-run workshop is part of the course [I2DS Tools for Data Science workshop](https://github.com/intro-to-data-science-21-workshop) at the [Hertie School, Berlin](https://www.hertie-school.org/en/). The student-run workshop is part of the course [Introduction to Data Science](https://github.com/intro-to-data-science-21) taught by Simon Munzert at the Hertie School, Berlin, in Fall 2021.  
 
 This repository contains the materials students will need for the interactive tutorial and two datasets they will need to conduct their analysis.
 
 ## Session Content 
 
-The workshop session has two parts. 
-
-Part 1 is a pre-recorded presentation that introduces students to the Janitor package, motivates them to use it, and introduces them to some of janitor's key functions. Some of the key janitor functions covered include:
-
-- clean_names()
-- row_to_names()
-- remove_empty()
-- remove_constant()
-- get_dupes
-- tabyl()
-- crosstabulation: adorn_totals(), adorn_percentages(), adorn_pct_formatting ()
-
-Part 2 is an interactive tutorial, where students will have an opportunity to practice using the janitor package. Students will use the functions above, plus others, to clean a typical 'dirty dataset'.
+This session will teach you how to clean 'typical' dirty data sets using the janitor package. Data scientists spend a great deal of time cleaning and organising data to get it into shape for analysis. Janitor provides a set of simple but powerful functions that help to clean variable names, remove unnecessary rows and columns, prepar data to bind two datasets together, and more. In the first, pre-recorded part of the session we will introduce students to key janitor functions. In the second, live part, students will practice using janitor functions on dirty data example.
 
 ## Main learning objectives
 
@@ -40,9 +26,10 @@ By the end of our workshop session, we hope that students will be able to:
 
 ## Further resources
 
-- https://github.com/sfirke/janitor
-- https://garthtarr.github.io/meatR/janitor.html#crosstabulation
-
+- [Github overview of janitor package](https://github.com/sfirke/janitor)
+- [Cross-tabulation with janitor](https://garthtarr.github.io/meatR/janitor.html#crosstabulation)
+- [CRAN all functions](https://rdrr.io/cran/janitor/)
+- [Blogpost from 'Swimming in the Data Lake' on janitor](https://medium.com/@verajosemanuel/janitor-a-good-r-package-for-data-cleaning-f3c733632ad9)
 
 ## License
 
