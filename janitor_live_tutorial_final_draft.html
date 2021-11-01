@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Cleaning dirty data with janitor</title>
+
+<script src="janitor_live_tutorial_files/header-attrs-2.7/header-attrs.js"></script>
+<script src="janitor_live_tutorial_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="janitor_live_tutorial_files/bootstrap-3.3.5/css/lumen.min.css" rel="stylesheet" />
+<script src="janitor_live_tutorial_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="janitor_live_tutorial_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="janitor_live_tutorial_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="janitor_live_tutorial_files/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="janitor_live_tutorial_files/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="janitor_live_tutorial_files/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="janitor_live_tutorial_files/navigation-1.1/tabsets.js"></script>
+<link href="janitor_live_tutorial_files/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="janitor_live_tutorial_files/pagedtable-1.1/js/pagedtable.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="custom.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Cleaning dirty data with <code>janitor</code></h1>
+<h3 class="subtitle">Live tutorial practice materials</h3>
+
+</div>
+
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>We have just learned about why <code>janitor</code> is a powerful tool for any data scientist, to clean and beautifully present a dirty dataset. Now we’re going to do some hands-on exercises, so you feel comfortable applying <code>janitor</code> functions on your own.</p>
+<p>There are two main elements of this tutorial:</p>
+<ul>
+<li><strong>Part 1:</strong> How to clean a dirty spreadsheet using <code>janitor</code> (which we will focus on).</li>
+<li><strong>Part 2:</strong> Creating and editing tables using <code>tabyl</code> and <code>adorn</code>.</li>
+</ul>
+<p>Before we get started, let’s load the packages we’ll need for these exercises.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># So we have all the other useful tidyverse functions</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor) <span class="co"># the package of the moment</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl) <span class="co"># to load excel</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate) <span class="co"># for better presentation of dates</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(naniar) <span class="co"># to deal with NAs</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr) <span class="co"># For one small piece of wrangling we&#39;ll do later</span></span></code></pre></div>
+<hr />
+</div>
+<div id="part-1-cleaning-a-dirty-dataset-using-janitor" class="section level2">
+<h2>Part 1: Cleaning a dirty dataset using <code>janitor</code></h2>
+<p>One of the best features of the <code>janitor</code> package is how it can help you to clean messy data tables, which you receive in excel format or download from the web. Our excel spreadsheet contains fake data about attendees at the ‘Hertie end of year party’. It looks like this:</p>
+<p><img src="Excel_image.PNG" width="100%" style="display: block; margin: auto;" /></p>
+<p><strong>Load the data</strong> Load the excel file into R and have a quick look at the data. (Reminder: The link to the file is available on the workshop website and in the Teams chat).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>party_raw <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;party.xlsx&quot;</span>)</span></code></pre></div>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ...</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(party_raw)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Guest list for Hertie end of year party"],"name":[1],"type":["chr"],"align":["left"]},{"label":["...2"],"name":[2],"type":["chr"],"align":["left"]},{"label":["...3"],"name":[3],"type":["chr"],"align":["left"]},{"label":["...4"],"name":[4],"type":["chr"],"align":["left"]},{"label":["...5"],"name":[5],"type":["chr"],"align":["left"]},{"label":["...6"],"name":[6],"type":["chr"],"align":["left"]},{"label":["...7"],"name":[7],"type":["chr"],"align":["left"]},{"label":["...8"],"name":[8],"type":["chr"],"align":["left"]},{"label":["...9"],"name":[9],"type":["chr"],"align":["left"]},{"label":["...10"],"name":[10],"type":["chr"],"align":["left"]}],"data":[{"1":"Note to organiser - remember to update this spreadsheet whenever anyone RSVPs","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA"},{"1":"Name","2":"Surname","3":"Year","4":"Paid for ticket?","5":"RSVP?","6":"Date RSVP","7":"email address","8":"Favourite drink","9":"Allergies","10":"Any other details"},{"1":"Caitlin","2":"Sarro","3":"2","4":"Yes","5":"Yes","6":"44513","7":"Caitlin.sarro@gmail.com","8":"NA","9":"?","10":"No"},{"1":"Lisa","2":"Pramann","3":"2","4":"Yes","5":"Yes","6":"44515","7":"lisapramann@t-online.de","8":"NA","9":"nuts","10":"No"},{"1":"Marina","2":"Luna","3":"1","4":"No","5":"Yes","6":"44517","7":"marina.monteiro.luna@gmail.com","8":"NA","9":"?","10":"No"},{"1":"Camilla","2":"Beer","3":"2","4":"No","5":"No","6":"44518","7":"c.beer@mpp.hertie-school.org","8":"NA","9":"?","10":"No"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>We can see there are several problems with this data:</p>
+<ul>
+<li>The column names are in the second row</li>
+<li>There are columns and rows which don’t have any data in them</li>
+<li>We don’t know yet whether there are duplicates</li>
+</ul>
+<p><strong>Question</strong>: What other problems can you see in the data that we could solve using <code>janitor</code>, or other <code>tidyverse</code> functions?</p>
+<div id="using-janitor-functions-to-clean-the-dataset" class="section level3">
+<h3>Using <code>janitor</code> functions to clean the dataset</h3>
+<p><strong>Step 1:</strong> Update the data frame so it has meaningful columns.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>party <span class="ot">&lt;-</span> party_raw <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select the row which contains the column headers</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">row_to_names</span>(<span class="at">row_number =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return column names in snake case</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># check what changed</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(party)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["surname"],"name":[2],"type":["chr"],"align":["left"]},{"label":["year"],"name":[3],"type":["chr"],"align":["left"]},{"label":["paid_for_ticket"],"name":[4],"type":["chr"],"align":["left"]},{"label":["rsvp"],"name":[5],"type":["chr"],"align":["left"]},{"label":["date_rsvp"],"name":[6],"type":["chr"],"align":["left"]},{"label":["email_address"],"name":[7],"type":["chr"],"align":["left"]},{"label":["favourite_drink"],"name":[8],"type":["chr"],"align":["left"]},{"label":["allergies"],"name":[9],"type":["chr"],"align":["left"]},{"label":["any_other_details"],"name":[10],"type":["chr"],"align":["left"]}],"data":[{"1":"Caitlin","2":"Sarro","3":"2","4":"Yes","5":"Yes","6":"44513","7":"Caitlin.sarro@gmail.com","8":"NA","9":"?","10":"No"},{"1":"Lisa","2":"Pramann","3":"2","4":"Yes","5":"Yes","6":"44515","7":"lisapramann@t-online.de","8":"NA","9":"nuts","10":"No"},{"1":"Marina","2":"Luna","3":"1","4":"No","5":"Yes","6":"44517","7":"marina.monteiro.luna@gmail.com","8":"NA","9":"?","10":"No"},{"1":"Camilla","2":"Beer","3":"2","4":"No","5":"No","6":"44518","7":"c.beer@mpp.hertie-school.org","8":"NA","9":"?","10":"No"},{"1":"Tom","2":"Arend","3":"2","4":"No","5":"Yes","6":"NA","7":"tom_arend@hotmail.de","8":"NA","9":"shellfish","10":"No"},{"1":"Simon","2":"Munzert","3":"1","4":"No","5":"No","6":"44503","7":"munzert@hertie-school.org","8":"NA","9":"?","10":"No"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>The data frame already looks a lot better, with clearer names and without the useless first couple of rows.</p>
+<p><strong>Step 2:</strong> Remove unnecessary columns and rows, including empty rows/columns and columns which contain constant values.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>party <span class="ot">&lt;-</span> party <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_empty</span>(<span class="fu">c</span>(<span class="st">&quot;rows&quot;</span>, <span class="st">&quot;cols&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_constant</span>(<span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Check what changed</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(party)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["surname"],"name":[2],"type":["chr"],"align":["left"]},{"label":["year"],"name":[3],"type":["chr"],"align":["left"]},{"label":["paid_for_ticket"],"name":[4],"type":["chr"],"align":["left"]},{"label":["rsvp"],"name":[5],"type":["chr"],"align":["left"]},{"label":["date_rsvp"],"name":[6],"type":["chr"],"align":["left"]},{"label":["email_address"],"name":[7],"type":["chr"],"align":["left"]},{"label":["allergies"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"Caitlin","2":"Sarro","3":"2","4":"Yes","5":"Yes","6":"44513","7":"Caitlin.sarro@gmail.com","8":"?"},{"1":"Lisa","2":"Pramann","3":"2","4":"Yes","5":"Yes","6":"44515","7":"lisapramann@t-online.de","8":"nuts"},{"1":"Marina","2":"Luna","3":"1","4":"No","5":"Yes","6":"44517","7":"marina.monteiro.luna@gmail.com","8":"?"},{"1":"Camilla","2":"Beer","3":"2","4":"No","5":"No","6":"44518","7":"c.beer@mpp.hertie-school.org","8":"?"},{"1":"Tom","2":"Arend","3":"2","4":"No","5":"Yes","6":"NA","7":"tom_arend@hotmail.de","8":"shellfish"},{"1":"Simon","2":"Munzert","3":"1","4":"No","5":"No","6":"44503","7":"munzert@hertie-school.org","8":"?"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>The dataset is looking much cleaner now, but there are still problems, for instance, the dates as they imported from excel are not clearly readable. There are also question marks in the ‘allergies’ column which ideally would be NAs.</p>
+<p><strong>Step 3:</strong> Do some final tidying, including:</p>
+<ul>
+<li>Update the date format.</li>
+<li>Convert the ‘year’ to a numeric vector</li>
+<li>Replace the question marks in the ‘allergies’ vector with NAs.</li>
+<li>Convert the upper case observations in the allergies column to lower case</li>
+</ul>
+<p>To do this we’ll use a couple of other tidyverse packages/functions.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>party <span class="ot">&lt;-</span> party <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date_rsvp =</span> <span class="fu">convert_to_date</span>(date_rsvp,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">character_fun =</span> lubridate<span class="sc">::</span>dmy),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">year =</span> <span class="fu">as.numeric</span>(year),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">allergies =</span> <span class="fu">tolower</span>(allergies)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  naniar<span class="sc">::</span><span class="fu">replace_with_na</span>(<span class="at">replace =</span> <span class="fu">list</span>(<span class="at">allergies =</span> <span class="st">&quot;?&quot;</span>)) <span class="co"># Replace question marks with NAs</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Check what changed</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(party)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["surname"],"name":[2],"type":["chr"],"align":["left"]},{"label":["year"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["paid_for_ticket"],"name":[4],"type":["chr"],"align":["left"]},{"label":["rsvp"],"name":[5],"type":["chr"],"align":["left"]},{"label":["date_rsvp"],"name":[6],"type":["date"],"align":["right"]},{"label":["email_address"],"name":[7],"type":["chr"],"align":["left"]},{"label":["allergies"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"Caitlin","2":"Sarro","3":"2","4":"Yes","5":"Yes","6":"2021-11-13","7":"Caitlin.sarro@gmail.com","8":"NA"},{"1":"Lisa","2":"Pramann","3":"2","4":"Yes","5":"Yes","6":"2021-11-15","7":"lisapramann@t-online.de","8":"nuts"},{"1":"Marina","2":"Luna","3":"1","4":"No","5":"Yes","6":"2021-11-17","7":"marina.monteiro.luna@gmail.com","8":"NA"},{"1":"Camilla","2":"Beer","3":"2","4":"No","5":"No","6":"2021-11-18","7":"c.beer@mpp.hertie-school.org","8":"NA"},{"1":"Tom","2":"Arend","3":"2","4":"No","5":"Yes","6":"<NA>","7":"tom_arend@hotmail.de","8":"shellfish"},{"1":"Simon","2":"Munzert","3":"1","4":"No","5":"No","6":"2021-11-03","7":"munzert@hertie-school.org","8":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div id="combining-dataframes-using-compare_df_columns" class="section level3">
+<h3>Combining dataframes using (<code>compare_df_columns</code>)</h3>
+<p>Now you have cleaned the end-of-year party dataset, you export the spreadsheet and give it to your friend Dominic, who will continue to collect further RSVPs. He has just returned the completed spreadsheet to you, and you want to combine it with yours into a master spreadsheet.</p>
+<p><strong>Step 1:</strong> We’ll first load Dominic’s spreadsheet, saved as ‘party_dominic’. The spreadsheet is linked at the same website as the party spreadsheet and also uploaded in the teams’ channel.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>party_dominic <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;party_dominic.xlsx&quot;</span>) </span></code></pre></div>
+<p>We assume that because we gave Dominic our spreadsheet, it should be possible to merge the dataframe using <code>dplyr::bind_rows</code>. Let’s try this.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We&#39;ll keep this commented out so we can display the code in html, but you can un-comment it to see the error for yourself.</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># bind_rows(party, party_dominic)</span></span></code></pre></div>
+<p>We receive an error, and <code>dplyr</code> already gives us a clue what it is, but we can use a <code>janitor</code> function to be totally sure.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compare_df_cols</span>(party, party_dominic, <span class="at">return =</span> <span class="st">&quot;mismatch&quot;</span>, <span class="at">bind_method =</span> <span class="st">&quot;rbind&quot;</span>)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["column_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["party"],"name":[2],"type":["chr"],"align":["left"]},{"label":["party_dominic"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"date_rsvp","2":"Date","3":"numeric"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>This is super useful, particularly when we’re working with large datasets! We now know we have to update the date format again in Dominic’s spreadsheet to be able to bind the datasets.</p>
+<p><strong>Step 2:</strong> Update the class of the problematic variable so they match and then bind the datasets. Note - we also do a little cleaning here to Dominic’s spreadsheet, similar to what we did above.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>party_combined <span class="ot">&lt;-</span> party_dominic <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date_rsvp =</span> <span class="fu">convert_to_date</span>(date_rsvp,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">character_fun =</span> lubridate<span class="sc">::</span>mdy)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">allergies =</span> <span class="fu">tolower</span>(allergies)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">replace_with_na</span>(<span class="at">replace =</span> <span class="fu">list</span>(<span class="at">allergies =</span> <span class="st">&quot;?&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(., party)</span></code></pre></div>
+</div>
+<div id="check-for-duplicates" class="section level3">
+<h3>Check for duplicates</h3>
+<p>Now we have a combined dataset, there’s a risk that some students may be included more than once in our combined list of RSVPs. We can use the janitor function <code>get_dupes</code> to check for it.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>party_combined <span class="sc">%&gt;%</span> <span class="fu">get_dupes</span>(name)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["dupe_count"],"name":[2],"type":["int"],"align":["right"]},{"label":["surname"],"name":[3],"type":["chr"],"align":["left"]},{"label":["paid_for_ticket"],"name":[4],"type":["chr"],"align":["left"]},{"label":["rsvp"],"name":[5],"type":["chr"],"align":["left"]},{"label":["email_address"],"name":[6],"type":["chr"],"align":["left"]},{"label":["allergies"],"name":[7],"type":["chr"],"align":["left"]},{"label":["date_rsvp"],"name":[8],"type":["date"],"align":["right"]},{"label":["year"],"name":[9],"type":["dbl"],"align":["right"]}],"data":[{"1":"Camilla","2":"2","3":"Beer","4":"No","5":"No","6":"c.beer@mpp.hertie-school.org","7":"NA","8":"2021-11-18","9":"2"},{"1":"Camilla","2":"2","3":"Beer","4":"No","5":"No","6":"c.beer@mpp.hertie-school.org","7":"NA","8":"2021-11-18","9":"1"},{"1":"Janine","2":"2","3":"De Vera","4":"Yes","5":"Yes","6":"janinepdevera@gmail.com","7":"chocolate","8":"2021-11-21","9":"1"},{"1":"Janine","2":"2","3":"De Vera","4":"No","5":"No","6":"janinepdevera@gmail.com","7":"shellfish","8":"<NA>","9":"1"},{"1":"Tom","2":"2","3":"Arend","4":"No","5":"Yes","6":"tom_arend@hotmail.de","7":"shellfish","8":"<NA>","9":"2"},{"1":"Tom","2":"2","3":"Arend","4":"No","5":"Yes","6":"tom_arend@hotmail.de","7":"shellfish","8":"<NA>","9":"2"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>We can see there are a few people who appear too many times in the dataset, so we might want to follow up with Dominic and check which records are correct…</p>
+<hr />
+</div>
+</div>
+<div id="part-2-creating-and-editing-tables-with-tabyl-and-adorn" class="section level2">
+<h2>Part 2: Creating and editing tables with <code>tabyl</code> and <code>adorn</code></h2>
+<p>We can also use <code>janitor</code> to quickly create impactful tables. It’s much more powerful than the base R <code>table()</code> function.</p>
+<p>What if we want to know how many people have RSVP-ed to the party, and how many have paid for their ticket? We can use <code>tabyl()</code> to quickly generate the table.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>party_combined <span class="sc">%&gt;%</span> <span class="fu">tabyl</span>(rsvp, paid_for_ticket)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["rsvp"],"name":[1],"type":["chr"],"align":["left"]},{"label":["No"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["Yes"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"No","2":"12","3":"0"},{"1":"Yes","2":"6","3":"16"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>Another example - what if we wanted to know how many people RSVPed after 7 November, and what year they were in? Maybe we want to know whether our additional invite to second year Hertie students was effective…We can combine tidyverse ‘filter’ with <code>tabyl</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>party_combined <span class="sc">%&gt;%</span> <span class="fu">filter</span>(date_rsvp <span class="sc">&gt;</span> <span class="st">&quot;2021-11-07&quot;</span>) <span class="sc">%&gt;%</span> <span class="fu">tabyl</span>(rsvp, year)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["rsvp"],"name":[1],"type":["chr"],"align":["left"]},{"label":["1"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["2"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"No","2":"1","3":"2"},{"1":"Yes","2":"7","3":"12"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+<p>The problem with the above, though, is that it’s not immediately clear what the different categories mean. For that, we can use the <code>adorn</code>functions that <code>janitor</code> offers.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>party_combined <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tabyl</span>(rsvp, paid_for_ticket) <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_totals</span>(<span class="st">&quot;row&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_percentages</span>(<span class="st">&quot;row&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_pct_formatting</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_ns</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">adorn_title</span>(<span class="st">&quot;combined&quot;</span>)</span></code></pre></div>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["rsvp/paid_for_ticket"],"name":[1],"type":["chr"],"align":["left"]},{"label":["No"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Yes"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"No","2":"100.0% (12)","3":"0.0%  (0)","_rn_":"1"},{"1":"Yes","2":"27.3%  (6)","3":"72.7% (16)","_rn_":"2"},{"1":"Total","2":"52.9% (18)","3":"47.1% (16)","_rn_":"3"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

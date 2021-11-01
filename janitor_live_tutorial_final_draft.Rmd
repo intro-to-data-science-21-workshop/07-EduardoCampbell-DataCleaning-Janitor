@@ -1,0 +1,193 @@
+---
+title: "Cleaning dirty data with `janitor`"
+subtitle: "Live tutorial practice materials"
+output: 
+  html_document:
+    toc: TRUE
+    df_print: paged
+    number_sections: FALSE
+    highlight: tango
+    theme: lumen
+    toc_depth: 3
+    toc_float: true
+    css: custom.css 
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+We have just learned about why `janitor` is a powerful tool for any data scientist, to clean and beautifully present a dirty dataset. Now we're going to do some hands-on exercises, so you feel comfortable applying `janitor` functions on your own.
+
+There are two main elements of this tutorial:
+
+* **Part 1:** How to clean a dirty spreadsheet using `janitor` (which we will focus on).
+* **Part 2:** Creating and editing tables using `tabyl` and `adorn`.
+
+Before we get started, let's load the packages we'll need for these exercises.
+
+```{r, echo = TRUE, message=F, warning =FALSE}
+library(tidyverse) # So we have all the other useful tidyverse functions
+library(janitor) # the package of the moment
+library(readxl) # to load excel
+library(lubridate) # for better presentation of dates
+library(naniar) # to deal with NAs
+library(tidyr) # For one small piece of wrangling we'll do later
+```
+
+---
+
+## Part 1: Cleaning a dirty dataset using `janitor`
+
+One of the best features of the `janitor` package is how it can help you to clean messy data tables, which you receive in excel format or download from the web. Our excel spreadsheet contains fake data about attendees at the 'Hertie end of year party'. It looks like this:
+
+
+```{r, fig.align='center', echo=F, out.width = "100%"}
+knitr::include_graphics("Excel_image.png")
+```
+
+**Load the data** Load the excel file into R and have a quick look at the data. 
+(Reminder: The link to the file is available on the workshop website and in the Teams chat).
+
+```{r}
+party_raw <- read_excel("party.xlsx")
+head(party_raw)
+```
+
+We can see there are several problems with this data:
+
+* The column names are in the second row 
+* There are columns and rows which don't have any data in them
+* We don't know yet whether there are duplicates
+
+**Question**: What other problems can you see in the data that we could solve using `janitor`, or other `tidyverse` functions?
+
+### Using `janitor` functions to clean the dataset
+
+**Step 1:** Update the data frame so it has meaningful columns.
+
+```{r}
+party <- party_raw %>% 
+  # Select the row which contains the column headers
+  row_to_names(row_number = 2) %>%  
+  # Return column names in snake case
+  clean_names() 
+
+# check what changed
+head(party)
+```
+
+The data frame already looks a lot better, with clearer names and without the useless first couple of rows.
+
+**Step 2:** Remove unnecessary columns and rows, including empty rows/columns and columns which contain constant values.
+
+```{r}
+party <- party %>%
+  remove_empty(c("rows", "cols")) %>%
+  remove_constant(na.rm = TRUE)
+
+# Check what changed
+head(party)
+```
+
+The dataset is looking much cleaner now, but there are still problems, for instance, the dates as they imported from excel are not clearly readable. There are also question marks in the 'allergies' column which ideally would be NAs.
+
+**Step 3:** Do some final tidying, including:
+
+* Update the date format. 
+* Convert the 'year' to a numeric vector 
+* Replace the question marks in the 'allergies' vector with NAs.
+* Convert the upper case observations in the allergies column to lower case
+
+To do this we'll use a couple of other tidyverse packages/functions.
+```{r}
+party <- party %>% 
+  mutate(date_rsvp = convert_to_date(date_rsvp,
+                                             character_fun = lubridate::dmy),
+         year = as.numeric(year),
+         allergies = tolower(allergies)) %>%
+  naniar::replace_with_na(replace = list(allergies = "?")) # Replace question marks with NAs
+
+# Check what changed
+head(party)
+```
+
+### Combining dataframes using (`compare_df_columns`)
+
+Now you have cleaned the end-of-year party dataset, you export the spreadsheet and give it to your friend Dominic, who will continue to collect further RSVPs. He has just returned the completed spreadsheet to you, and you want to combine it with yours into a master spreadsheet.
+
+**Step 1:** We'll first load Dominic's spreadsheet, saved as 'party_dominic'. The spreadsheet is linked at the same website as the party spreadsheet and also uploaded in the teams' channel. 
+
+```{r}
+party_dominic <- read_excel("party_dominic.xlsx") 
+```
+
+We assume that because we gave Dominic our spreadsheet, it should be possible to merge the dataframe using `dplyr::bind_rows`. Let's try this. 
+
+```{r}
+# We'll keep this commented out so we can display the code in html, but you can un-comment it to see the error for yourself.
+# bind_rows(party, party_dominic)
+```
+
+We receive an error, and `dplyr` already gives us a clue what it is, but we can use a `janitor` function to be totally sure.
+
+```{r}
+compare_df_cols(party, party_dominic, return = "mismatch", bind_method = "rbind")
+```
+
+This is super useful, particularly when we're working with large datasets! We now know we have to update the date format again in Dominic's spreadsheet to be able to bind the datasets. 
+
+**Step 2:** Update the class of the problematic variable so they match and then bind the datasets.
+Note - we also do a little cleaning here to Dominic's spreadsheet, similar to what we did above.
+
+```{r}
+party_combined <- party_dominic %>%
+  mutate(date_rsvp = convert_to_date(date_rsvp,
+                                             character_fun = lubridate::mdy)) %>%
+  mutate(allergies = tolower(allergies)) %>%
+  replace_with_na(replace = list(allergies = "?")) %>%
+  bind_rows(., party)
+
+```
+
+### Check for duplicates
+
+Now we have a combined dataset, there's a risk that some students may be included more than once in our combined list of RSVPs. We can use the janitor function `get_dupes` to check for it.
+
+```{r}
+party_combined %>% get_dupes(name)
+```
+
+We can see there are a few people who appear too many times in the dataset, so we might want to follow up with Dominic and check which records are correct...
+
+---
+
+## Part 2: Creating and editing tables with `tabyl` and `adorn`
+
+We can also use `janitor` to quickly create impactful tables. It's much more powerful than the base R `table()` function.
+
+What if we want to know how many people have RSVP-ed to the party, and how many have paid for their ticket? We can use `tabyl()` to quickly generate the table.
+
+```{r}
+party_combined %>% tabyl(rsvp, paid_for_ticket)
+```
+
+Another example - what if we wanted to know how many people RSVPed after 7 November, and what year they were in? Maybe we want to know whether our additional invite to second year Hertie students was effective...We can combine tidyverse 'filter' with `tabyl`.
+```{r}
+party_combined %>% filter(date_rsvp > "2021-11-07") %>% tabyl(rsvp, year)
+```
+
+The problem with the above, though, is that it's not immediately clear what the different categories mean. For that, we can use the `adorn`functions that `janitor` offers. 
+
+```{r}
+party_combined %>%
+  tabyl(rsvp, paid_for_ticket) %>%
+  adorn_totals("row") %>%
+  adorn_percentages("row") %>%
+  adorn_pct_formatting() %>%
+  adorn_ns() %>%
+  adorn_title("combined")
+```
