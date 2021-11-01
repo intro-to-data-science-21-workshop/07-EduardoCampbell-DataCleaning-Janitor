@@ -2,7 +2,9 @@
 
 ## Summary 
 
-This short student-run workshop is part of the course I2DS Tools for Data Science workshop at the Hertie School, Berlin. It will take place in November 2021. The purpose of this workshop is to introduce students to the Janitor Package as an additional tool in their data science toolbox. 
+This short student-run workshop is part of the course [I2DS Tools for Data Science workshop](https://github.com/intro-to-data-science-21-workshop) at the Hertie School, Berlin [https://www.hertie-school.org/en/]. The student-run workshop is part of the course Introduction to Data Science taught by Simon Munzert at the Hertie School, Berlin, in Fall 2021. 
+
+The purpose of this workshop is to introduce students to the Janitor Package as an additional tool in their data science toolbox. 
 
 This repository contains the materials students will need for the interactive tutorial and two datasets they will need to conduct their analysis.
 
