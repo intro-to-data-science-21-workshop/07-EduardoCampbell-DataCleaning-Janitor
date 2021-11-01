@@ -2,13 +2,13 @@
 
 ## Summary 
 
-This short student-run workshop is part of the course [I2DS Tools for Data Science workshop](https://github.com/intro-to-data-science-21-workshop) at the [Hertie School, Berlin](https://www.hertie-school.org/en/). The student-run workshop is part of the course [Introduction to Data Science](https://github.com/intro-to-data-science-21) taught by Simon Munzert at the Hertie School, Berlin, in Fall 2021.  
+This repository provides materials for a session that is part of the [I2DS Tools for Data Science workshop](https://github.com/intro-to-data-science-21-workshop) run at the [Hertie School, Berlin](https://www.hertie-school.org/en/). The student-run workshop is part of the course [Introduction to Data Science](https://github.com/intro-to-data-science-21) taught by Simon Munzert at the Hertie School, Berlin, in Fall 2021.  
 
 This repository contains the materials students will need for the interactive tutorial and two datasets they will need to conduct their analysis.
 
 ## Session Content 
 
-This session will teach you how to clean 'typical' dirty data sets using the janitor package. Data scientists spend a great deal of time cleaning and organising data to get it into shape for analysis. Janitor provides a set of simple but powerful functions that help to clean variable names, remove unnecessary rows and columns, prepar data to bind two datasets together, and more. In the first, pre-recorded part of the session we will introduce students to key janitor functions. In the second, live part, students will practice using janitor functions on dirty data example.
+This session will teach you how to clean 'typical' dirty data sets using the janitor package. Data scientists spend a great deal of time cleaning and organising data to get it into shape for analysis. Janitor provides a set of simple but powerful functions that help to clean variable names, remove unnecessary rows and columns, prepare data to bind two datasets together, and more. In the first, pre-recorded part of the session we will introduce students to key janitor functions. In the second, live part, students will practice using janitor functions on a dirty data example.
 
 ## Main learning objectives
 
