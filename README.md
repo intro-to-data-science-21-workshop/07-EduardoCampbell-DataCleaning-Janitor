@@ -15,6 +15,7 @@ Part 1 is a pre-recorded presentation that introduces students to the Janitor pa
 - clean_names()
 - row_to_names()
 - remove_empty()
+- remove_constant()
 - get_dupes
 - tabyl()
 - crosstabulation: adorn_totals(), adorn_percentages(), adorn_pct_formatting ()
