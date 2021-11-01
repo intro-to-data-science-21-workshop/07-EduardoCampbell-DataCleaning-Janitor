@@ -2,7 +2,7 @@
 
 ## Summary 
 
-This short student-run workshop is part of the course I2DS Tools for Data Science workshop at the Hertie School, Berlin. It will take place in November 2021. The purpose of this workshop is to introduce students to the Janitor Package and teach them how to use the package to clean dirty data sets. 
+This short student-run workshop is part of the course I2DS Tools for Data Science workshop at the Hertie School, Berlin. It will take place in November 2021. The purpose of this workshop is to introduce students to the Janitor Package as an additional tool in their data science toolbox. 
 
 This repository contains the materials students will need for the interactive tutorial and two datasets they will need to conduct their analysis.
 
@@ -48,7 +48,7 @@ The material in this repository is made available under the MIT license.
 
 ## Statement of Contributions 
 
-We collaborated to develop our approach to the workshop and to design our presentation and materials. However, we each took the lead on a key aspect.
+We collaborated to develop our approach to the workshop and to design our presentation and materials. However, we each took the lead on a key aspect of the workshop.
 
 **Claudia Zwar** was responsible for preparing the materials for the live tutorial and writing the Readme file.
 
