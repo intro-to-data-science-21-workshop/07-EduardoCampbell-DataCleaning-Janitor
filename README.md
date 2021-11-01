@@ -33,7 +33,7 @@ By the end of our workshop session, we hope that students will be able to:
 
 ## License
 
-The material in this repository is made available under the ([MIT license](https://opensource.org/licenses/mit-license.php)).
+The material in this repository is made available under the [MIT license](https://opensource.org/licenses/mit-license.php).
 
 ## Statement of Contributions 
 
